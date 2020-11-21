@@ -2,3 +2,5 @@
 *.class
 
 out/production/chess-game/META-INF/
+
+.idea/misc.xml
