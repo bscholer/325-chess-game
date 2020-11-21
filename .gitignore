@@ -1,4 +1,4 @@
 
 *.class
 
-.idea/
+out/production/chess-game/META-INF/
