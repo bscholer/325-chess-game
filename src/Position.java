@@ -29,7 +29,11 @@ public class Position {
     }
 
     public String getxPos() {
-        return xPos;
+        return xPos.toUpperCase();
+    }
+
+    public int getXPosAsInt() {
+        return xPos.charAt(0) - 65;
     }
 
     public int getyPos() {
