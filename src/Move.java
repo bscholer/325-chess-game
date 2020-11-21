@@ -40,4 +40,9 @@ public class Move {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
+
+    @Override
+    public String toString() {
+        return piece.toString() + "@" + piece.getPosition() + " -> " + futurePosition;
+    }
 }

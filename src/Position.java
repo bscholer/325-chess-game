@@ -21,6 +21,18 @@ public class Position {
     }
 
     /**
+     * Constructor for creating a Position with numerical coordinates
+     * @param xPos
+     * @param yPos
+     */
+    public Position (int xPos, int yPos) {
+        if (xPos >= 0 && xPos <= 8 && yPos >= 0 && yPos <= 8) {
+            this.xPos = ((char) (xPos + 64)) + "";
+            this.yPos = yPos;
+        }
+    }
+
+    /**
      * Constructor, parses the position string and sets the xPos/yPos variables.
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
      */
@@ -33,7 +45,7 @@ public class Position {
     }
 
     public int getXPosAsInt() {
-        return xPos.charAt(0) - 65;
+        return xPos.charAt(0) - 64;
     }
 
     public int getyPos() {
@@ -41,6 +53,7 @@ public class Position {
     }
 
     public void setxPos(String xPos) throws InvalidPositionException {
+        // Make sure the xPos is a valid letter
         if (xPos.length() == 1 && "abcdefghABCDEFGH".contains("" + xPos)) {
             this.xPos = xPos;
         }

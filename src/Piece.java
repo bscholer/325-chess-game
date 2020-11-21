@@ -28,13 +28,20 @@ public interface Piece {
      * The easiest (but not the most efficient way to implement this is probably to loop through all possible
      * positions on the Board and check if they're valid.
      * This will prevent us from having to rewrite the piece movement logic in two methods.
+     * @param board the current board
      * @return The (Array)List of valid moves.
      */
-    public List<Move> getPotentialMoves();
+    public List<Move> getPotentialMoves(Board board);
 
     /**
      * Sets the color of the piece. Use Piece.WHITE or Piece.BLACK.
      * @param color Piece.WHITE or Piece.BLACK
      */
     public void setColor(int color);
+
+    /**
+     * Gets the piece's Position
+     * @return piece's current Position
+     */
+    public Position getPosition();
 }

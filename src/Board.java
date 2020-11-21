@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * The chess board. Contains a 2D array of pieces.
  */
@@ -5,8 +7,23 @@ public class Board {
 
     private Piece[][] pieces;
 
+    /**
+     * Default constructor, just instantiates the array.
+     * Call fillBoard() to fill the board with pieces in their starting positions
+     */
     public Board () {
+        pieces = new Piece[8][8];
+    }
 
+    /**
+     * Creates the pieces on the board
+     */
+    public void fillBoard() {
+        // Create pawns
+        for (int i = 0; i < 8; i++) {
+            pieces[0][i] = new Pawn(new Position( 0, i), Piece.WHITE);
+            pieces[7][i] = new Pawn(new Position( 7, i), Piece.BLACK);
+        }
     }
 
     /**
@@ -32,5 +49,25 @@ public class Board {
      */
     public Piece getPieceAt(Position position) {
         return pieces[position.getXPosAsInt()][position.getyPos()];
+    }
+
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "Board:\n";
+        for (int x = 0; x < 8; x++) {
+            ret += "-----------------\n";
+            for (int y = 0; y < 8; y++) {
+                ret += "|";
+                if (pieces[x][y] instanceof Pawn) {
+                    ret += "P";
+                }
+                else {
+                    ret += " ";
+                }
+            }
+            ret += "|\n";
+        }
+        return ret;
     }
 }
