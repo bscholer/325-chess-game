@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Assigned to: Ashwin
+ *
+ * The Pawn class
+ */
 public class Pawn extends PieceWrapper {
 
     public Pawn(Position position, int color) {
@@ -8,6 +13,13 @@ public class Pawn extends PieceWrapper {
         this.color = color;
     }
 
+    /**
+     * THIS CODE NEEDS FIXED!!
+     * Given a Board, check if a Move is valid or not.
+     * @param board The Board that the Pieces are on
+     * @param move The attempted Move
+     * @return True if the Move is valid, false otherwise
+     */
     @Override
     public boolean isMoveValid(Board board, Move move) {
         // Make sure there isn't already a piece at the future position
@@ -37,7 +49,8 @@ public class Pawn extends PieceWrapper {
     }
 
     /**
-     * THIS CODE NEEDS FIXED!!
+     * This code *might* need fixed
+     *
      * Get the potential moves of the pawn.
      * First, check if the Heroku API is working, and if so, use that. Otherwise,
      * @param board the current board

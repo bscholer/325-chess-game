@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Assigned to: Kenny
+ *
  * The helper class that handles all interaction with the Heroku Chess API.
  *
  * All API endpoints specified in comments assume a prefix of:

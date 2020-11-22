@@ -11,6 +11,7 @@ public class PieceWrapper implements Piece {
 
     /*
      * OVERRIDE THIS!!!!
+     * Implementing these methods is the main thing that you need to @Ashwin
      */
     @Override
     public boolean isMoveValid(Board board, Move move) {
