@@ -44,4 +44,6 @@ public interface Piece {
      * @return piece's current Position
      */
     public Position getPosition();
+
+    public void setPosition(Position position);
 }

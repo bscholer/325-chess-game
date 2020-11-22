@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The chess board. Contains a 2D array of pieces.
@@ -13,6 +15,14 @@ public class Board {
      */
     public Board () {
         pieces = new Piece[8][8];
+    }
+
+    /**
+     * Create a board with a 2d array of Pieces
+     * @param pieces the 2d array of Pieces
+     */
+    public Board(Piece[][] pieces) {
+        this.pieces = pieces;
     }
 
     /**
@@ -31,7 +41,36 @@ public class Board {
      * @param move The move
      */
     public void movePiece(Move move) {
-        move.getPiece().isMoveValid(this, move);
+        // Make sure the move is valid first
+        if (move.getPiece().isMoveValid(this, move)) {
+            // Change the Piece object's position
+            move.getPiece().setPosition(move.getFuturePosition());
+        }
+    }
+
+    /**
+     * This will look through the current board, find all the pieces, and reset their positions to
+     * whatever they have as their position variable.
+     * Call this method AFTER changing a Piece object's position
+     */
+    public void updateBoard() {
+        // Get all the pieces and put them in a temporary (Array)List
+        List<Piece> piecesList = new ArrayList<>();
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (pieces[x][y] != null) {
+                    piecesList.add(pieces[x][y]);
+                }
+            }
+        }
+
+        // Nuke the (2d) pieces array
+        pieces = new Piece[8][8];
+
+        // Add the pieces back into the pieces 2d array
+        for (Piece piece : piecesList) {
+            pieces[piece.getPosition().getXPosAsInt()][piece.getPosition().getyPos()] = piece;
+        }
     }
 
     /**

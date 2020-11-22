@@ -6,7 +6,8 @@ public class Main {
         Board board = new Board();
         board.fillBoard();
         System.out.println(board);
-        List<Move> moves = board.getPieceAt(new Position(0, 0)).getPotentialMoves(board);
-        System.out.println(moves);
+        board.updateBoard();
+//        List<Move> moves = board.getPieceAt(new Position(0, 0)).getPotentialMoves(board);
+        System.out.println(board);
     }
 }
