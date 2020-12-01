@@ -22,12 +22,12 @@ public class Position {
 
     /**
      * Constructor for creating a Position with numerical coordinates
-     * @param xPos
-     * @param yPos
+     * @param xPos 0-7
+     * @param yPos 0-7
      */
     public Position (int xPos, int yPos) {
         if (xPos >= 0 && xPos <= 8 && yPos >= 0 && yPos <= 8) {
-            this.xPos = ((char) (xPos + 64)) + "";
+            this.xPos = ((char) (xPos + 65)) + "";
             this.yPos = yPos;
         }
     }
@@ -45,7 +45,7 @@ public class Position {
     }
 
     public int getXPosAsInt() {
-        return xPos.charAt(0) - 64;
+        return xPos.charAt(0) - 65;
     }
 
     public int getyPos() {
@@ -63,7 +63,7 @@ public class Position {
     }
 
     public void setyPos(int yPos) throws InvalidPositionException {
-        if (yPos >= 1 && yPos <= 8) {
+        if (yPos >= 0 && yPos <= 7) {
             this.yPos = yPos;
         }
         else {
@@ -101,6 +101,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return xPos + (yPos + "");
+        return (xPos) + ((yPos + 1) + "");
     }
 }

@@ -69,11 +69,37 @@ public class Board extends JPanel {
      * Creates the pieces on the board
      */
     public void fillBoard() {
-        // Create pawns
+        // Create Pawns
         for (int i = 0; i < 8; i++) {
             pieces[1][i] = new Pawn(new Position( 1, i), Piece.GOLD);
             pieces[6][i] = new Pawn(new Position( 6, i), Piece.SILVER);
         }
+
+        // Create Rooks
+        pieces[0][0] = new Rook(new Position(0, 0), Piece.GOLD);
+        pieces[0][7] = new Rook(new Position(0, 7), Piece.GOLD);
+        pieces[7][7] = new Rook(new Position(7, 7), Piece.SILVER);
+        pieces[7][0] = new Rook(new Position(7, 0), Piece.SILVER);
+
+        // Create Knights
+        pieces[0][1] = new Knight(new Position(0, 1), Piece.GOLD);
+        pieces[0][6] = new Knight(new Position(0, 6), Piece.GOLD);
+        pieces[7][6] = new Knight(new Position(7, 6), Piece.SILVER);
+        pieces[7][1] = new Knight(new Position(7, 1), Piece.SILVER);
+
+        // Create Bishops
+        pieces[0][2] = new Bishop(new Position(0, 2), Piece.GOLD);
+        pieces[0][5] = new Bishop(new Position(0, 5), Piece.GOLD);
+        pieces[7][5] = new Bishop(new Position(7, 5), Piece.SILVER);
+        pieces[7][2] = new Bishop(new Position(7, 2), Piece.SILVER);
+
+        // Create Queens
+        pieces[0][3] = new Queen(new Position(0, 3), Piece.GOLD);
+        pieces[7][3] = new Queen(new Position(7, 3), Piece.SILVER);
+
+        // Create Kings
+        pieces[0][4] = new King(new Position(0, 4), Piece.GOLD);
+        pieces[7][4] = new King(new Position(7, 4), Piece.SILVER);
     }
 
     /**
@@ -113,6 +139,26 @@ public class Board extends JPanel {
                     if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_PAWN));
                     if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_PAWN));
                 }
+                else if (piece instanceof Rook) {
+                    if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_ROOK));
+                    if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_ROOK));
+                }
+                else if (piece instanceof Bishop) {
+                    if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_BISHOP));
+                    if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_BISHOP));
+                }
+                else if (piece instanceof Knight) {
+                    if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_KNIGHT));
+                    if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_KNIGHT));
+                }
+                else if (piece instanceof Queen) {
+                    if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_QUEEN));
+                    if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_QUEEN));
+                }
+                else if (piece instanceof King) {
+                    if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_KING));
+                    if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_KING));
+                }
             }
         }
         repaint();
@@ -132,7 +178,8 @@ public class Board extends JPanel {
      * @return The piece at position
      */
     public Piece getPieceAt(Position position) {
-        return pieces[position.getXPosAsInt()][position.getyPos()];
+//        return pieces[position.getXPosAsInt()][position.getyPos()];
+        return pieces[position.getyPos()][position.getXPosAsInt()];
     }
 
     @Override

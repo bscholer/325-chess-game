@@ -1,10 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pawn implements Piece {
-
-    private Position position;
-    private int color;
+public class Pawn extends PieceWrapper {
 
     public Pawn(Position position, int color) {
         super(position, color);
@@ -50,18 +47,6 @@ public class Pawn implements Piece {
             }
         }
         return moves;
-    }
-
-    @Override
-    public void setColor(int color) {
-        if (color == Piece.WHITE || color == Piece.BLACK) {
-            this.color = color;
-        }
-    }
-
-    @Override
-    public Position getPosition() {
-        return this.position;
     }
 
     @Override

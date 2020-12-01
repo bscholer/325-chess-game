@@ -50,4 +50,10 @@ public interface Piece {
      * @return piece's current Position
      */
     public Position getPosition();
+
+    /**
+     * Sets the Piece's Position
+     * @param position the Position to set
+     */
+    public void setPosition(Position position);
 }
