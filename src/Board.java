@@ -19,6 +19,7 @@ public class Board extends JPanel {
     private final int READY_TO_MOVE = 0;
     private final int MOVES_SHOWN = 1;
     private List<Move> possibleMoves;
+    private int myColor = Piece.SILVER;
 
     /**
      * Default constructor, just instantiates the array.
@@ -52,15 +53,16 @@ public class Board extends JPanel {
                     }
                 }
                 if (state == READY_TO_MOVE) {
-                    state = MOVES_SHOWN;
                     if (piece != null) {
-                        possibleMoves = piece.getPotentialMoves(board);
+                        if (piece.getColor() == myColor) {
+                            possibleMoves = piece.getPotentialMoves(board);
 
-                        // Highlight the possible move locations
-                        for (Move move : possibleMoves) {
-                            boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
+                            // Highlight the possible move locations
+                            for (Move move : possibleMoves) {
+                                boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
+                            }
+                            state = MOVES_SHOWN;
                         }
-                        System.out.println(possibleMoves);
                     }
                 }
                 else if (state == MOVES_SHOWN) {
@@ -185,6 +187,10 @@ public class Board extends JPanel {
     public void movePiece(Move move) {
         // Make sure that it's valid
         if (move.getPiece().isMoveValid(this, move)) {
+            // Check if there is already a Piece where we are trying to move
+            if (getPieceAt(move.getFuturePosition()) != null) {
+                removePiece(move.getFuturePosition());
+            }
             System.out.println("It's valid!");
             System.out.println(move.getPiece().getPosition());
             Position originalPosition = new Position(move.getPiece().getPosition().toString());
@@ -223,6 +229,28 @@ public class Board extends JPanel {
             }
         }
         return piecesList;
+    }
+
+    /**
+     * Removes a Piece, given the Piece object.
+     * @param piece The Piece to remove from the Board
+     */
+    public void removePiece(Piece piece) {
+        pieces[piece.getPosition().getyPos()][piece.getPosition().getXPosAsInt()] = null;
+    }
+
+    /**
+     * Remove the piece at the given Position
+     * @param position The position of the Piece that should be removed
+     */
+    public void removePiece(Position position) {
+        // Get the piece at the position
+        Piece piece = getPieceAt(position);
+
+        // If there isn't a piece at that position, return false
+        if (piece == null) return;
+
+        removePiece(piece);
     }
 
     /**

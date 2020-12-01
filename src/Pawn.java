@@ -10,7 +10,7 @@ public class Pawn extends PieceWrapper {
     @Override
     public boolean isMoveValid(Board board, Move move) {
         // Make sure there isn't already a piece at the future position
-        if (board.getPieceAt(move.getFuturePosition()) != null) return false;
+//        if (board.getPieceAt(move.getFuturePosition()) != null) return false;
 
         int curX, curY, futureX, futureY;
         curX = move.getPiece().getPosition().getXPosAsInt();
