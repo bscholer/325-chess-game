@@ -1,4 +1,8 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Assigned to: Isabelle
@@ -10,7 +14,11 @@ public class GUI extends JFrame {
 
     private Board board;
     private ChessAPI chessAPI;
-    // Whatever other variables you need
+    private boolean isCreatingGame;
+    Locale englishLocale = new Locale("en", "US");
+    Locale frenchLocale = new Locale("es", "ES");
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("resources", englishLocale);
+    GUI gui;
 
     /**
      * Default constructor, please add stuff to it as needed.
@@ -18,6 +26,64 @@ public class GUI extends JFrame {
      * Feel free to chunk it out into separate methods of readability!
      */
     public GUI() {
+        gui = this;
+
+        setSize(300, 400);
+        setLayout(null);
+        setVisible(true);
+        setTitle(resourceBundle.getString("title"));
+
+        JPanel startPanel = new JPanel();
+        startPanel.setBounds(0, 0, 250, 350);
+        JButton createGame = new JButton(resourceBundle.getString("startNewGame"));
+        JButton joinGame = new JButton(resourceBundle.getString("joinGame"));
+        JTextField gameID = new JTextField(15);
+        JLabel gameIDLabel = new JLabel(resourceBundle.getString("gameID"));
+        JButton begin = new JButton(resourceBundle.getString("begin"));
+
+        startPanel.add(createGame);
+        startPanel.add(joinGame);
+        add(startPanel);
+        repaint();
+
+        ActionListener startingListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("here");
+                // Remove the buttons and add the game ID label and TextField
+                startPanel.remove(createGame);
+                startPanel.remove(joinGame);
+                startPanel.add(gameIDLabel);
+                startPanel.add(gameID);
+                startPanel.add(begin);
+                startPanel.repaint();
+                if (e.getSource() == createGame) {
+                    isCreatingGame = true;
+                    chessAPI = new ChessAPI(false);
+                    gameID.setText(chessAPI.getGameID());
+                }
+                else if (e.getSource() == joinGame) {
+                    isCreatingGame = false;
+                }
+            }
+        };
+        createGame.addActionListener(startingListener);
+        joinGame.addActionListener(startingListener);
+
+        ActionListener gameBeginListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isCreatingGame) {
+                    // Launch the game
+                }
+                else {
+                    chessAPI = new ChessAPI(gameID.getText(), false);
+                    // Launch the game
+                }
+            }
+        };
+
+
         // Ask the user if it should be multi-player or single-player
         // Create the chessAPI and board
         // Go through the flow of the gameplay

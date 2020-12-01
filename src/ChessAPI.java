@@ -24,6 +24,7 @@ public class ChessAPI {
      */
     public ChessAPI(boolean isOnePlayer) {
         this.isOnePlayer = isOnePlayer;
+        this.gameID = "FAKE GAME ID";
         // TODO API code
     }
 
@@ -94,5 +95,9 @@ public class ChessAPI {
     public Piece[][] getBoard() {
         // TODO API code
         return new Piece[8][8];
+    }
+
+    public String getGameID() {
+        return gameID;
     }
 }
