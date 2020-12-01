@@ -36,7 +36,7 @@ public class Position {
      * Constructor, parses the position string and sets the xPos/yPos variables.
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
      */
-    public Position (String position) throws InvalidPositionException {
+    public Position (String position) {
         this.setPosition(position);
     }
 
@@ -73,34 +73,46 @@ public class Position {
 
     /**
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
-     * @throws InvalidPositionException Gets thrown if the position is invalid
      */
-    public void setPosition (String position) throws InvalidPositionException {
+    public void setPosition (String position) {
         // The position must be only two characters long
-        if (position.length() != 2) throw new InvalidPositionException(position + " is not a valid position");
+        if (position.length() != 2) return;
 
         Matcher xyMatch = xyPattern.matcher(position);
         // Try the xy match first
         if (xyMatch.find()) {
             xPos = xyMatch.group(1).toUpperCase();
-            yPos = Integer.parseInt(xyMatch.group(2));
+            yPos = Integer.parseInt(xyMatch.group(2)) - 1;
         }
         // xy match didn't work, so try yxMatch
         else {
             Matcher yxMatch = yxPattern.matcher(position);
             if (yxMatch.find()) {
                 xPos = yxMatch.group(2).toUpperCase();
-                yPos = Integer.parseInt(yxMatch.group(1));
+                yPos = Integer.parseInt(yxMatch.group(1)) - 1;
             }
             else {
-                // Neither match worked, so throw an exception
-                throw new InvalidPositionException(position + " is not a valid position");
+                // Neither match worked
+                return;
             }
         }
     }
 
     @Override
     public String toString() {
-        return (xPos) + ((yPos + 1) + "");
+        return xPos + ((yPos + 1) + "");
+    }
+
+    /**
+     * Just checks if the x and y of this and obj are equal
+     * @param obj The Position
+     * @return true or false, depending on if the x's and y's match
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            return (xPos.equals(((Position) obj).getxPos()) && yPos == ((Position) obj).getyPos());
+        }
+        else return false;
     }
 }
