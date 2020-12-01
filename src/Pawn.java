@@ -7,8 +7,7 @@ public class Pawn implements Piece {
     private int color;
 
     public Pawn(Position position, int color) {
-        this.position = position;
-        this.color = color;
+        super(position, color);
     }
 
     @Override

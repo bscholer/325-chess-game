@@ -9,8 +9,8 @@ public interface Piece {
 
     Position position = new Position();
     int color = 0;
-    public static final int WHITE = 0;
-    public static final int BLACK = 1;
+    public static final int SILVER = 0;
+    public static final int GOLD = 1;
 
     /**
      * This method checks if a move is valid, given a Move.
@@ -34,10 +34,16 @@ public interface Piece {
     public List<Move> getPotentialMoves(Board board);
 
     /**
-     * Sets the color of the piece. Use Piece.WHITE or Piece.BLACK.
-     * @param color Piece.WHITE or Piece.BLACK
+     * Sets the color of the piece. Use Piece.SILVER or Piece.GOLD.
+     * @param color Piece.SILVER or Piece.WHITE
      */
     public void setColor(int color);
+
+    /**
+     * Gets the color of the piece.
+     * @return
+     */
+    public int getColor();
 
     /**
      * Gets the piece's Position
