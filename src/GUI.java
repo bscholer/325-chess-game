@@ -18,6 +18,7 @@ public class GUI extends JFrame {
     Locale englishLocale = new Locale("en", "US");
     Locale frenchLocale = new Locale("es", "ES");
     ResourceBundle resourceBundle = ResourceBundle.getBundle("resources", englishLocale);
+    GUI gui;
 
     /**
      * Default constructor, please add stuff to it as needed.
@@ -25,6 +26,7 @@ public class GUI extends JFrame {
      * Feel free to chunk it out into separate methods of readability!
      */
     public GUI() {
+        gui = this;
         setSize(300, 400);
         setLayout(null);
         setVisible(true);
@@ -41,6 +43,7 @@ public class GUI extends JFrame {
         startPanel.add(createGame);
         startPanel.add(joinGame);
         add(startPanel);
+        pack();
         repaint();
 
         ActionListener startingListener = new ActionListener() {
@@ -71,14 +74,20 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isCreatingGame) {
-                    // Launch the game
                 }
                 else {
                     chessAPI = new ChessAPI(gameID.getText(), false);
-                    // Launch the game
                 }
+                Board board = new Board();
+                gui.remove(startPanel);
+                board.fillBoard();
+                board.drawBoard();
+                gui.add(board);
+                gui.pack();
+                gui.repaint();
             }
         };
+        begin.addActionListener(gameBeginListener);
 
 
         // Ask the user if it should be multi-player or single-player

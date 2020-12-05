@@ -99,7 +99,7 @@ public class Board extends JPanel {
 
                 // Color every other button black
                 if ((x % 2 == 1 && y % 2 == 1) || (y % 2 == 0 && x % 2 == 0)) {
-                    button.setBackground(Color.WHITE);
+                    button.setBackground(Color.GRAY);
                 } else {
                     button.setBackground(Color.BLACK);
                 }
@@ -133,7 +133,7 @@ public class Board extends JPanel {
 
                 // Color every other button black
                 if ((x % 2 == 1 && y % 2 == 1) || (y % 2 == 0 && x % 2 == 0)) {
-                    button.setBackground(Color.WHITE);
+                    button.setBackground(Color.GRAY);
                 } else {
                     button.setBackground(Color.BLACK);
                 }

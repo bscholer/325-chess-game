@@ -16,11 +16,6 @@ public class Main {
         frame.pack();
         frame.repaint();
         List<Move> moves = board.getPieceAt(new Position(0, 1)).getPotentialMoves(board);
-//        Position position = new Position(1, 0);
-//        System.out.println(position.getXPosAsInt() + ", " + position.getyPos());
-//        System.out.println(position);
-//        System.out.println(board.getPieceAt(position));
-//        System.out.println(board);
         System.out.println(moves);
 
 //        Board board = new Board();
