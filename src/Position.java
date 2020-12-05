@@ -100,7 +100,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return xPos + ((yPos + 1) + "");
+        return (xPos + ((yPos + 1) + "")).toLowerCase();
     }
 
     /**

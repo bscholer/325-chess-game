@@ -15,11 +15,12 @@ public class Board extends JPanel {
     private Piece[][] pieces;
     private JButton[][] boardButtons;
     private Board board;
+    private ChessAPI api;
     private int state;
     private final int READY_TO_MOVE = 0;
     private final int MOVES_SHOWN = 1;
     private List<Move> possibleMoves;
-    private int myColor = Piece.SILVER;
+    private int myColor = Piece.GOLD;
 
     /**
      * Default constructor, just instantiates the array.
@@ -30,6 +31,8 @@ public class Board extends JPanel {
         super(new GridLayout(0, 9));
         board = this;
         setBorder(new LineBorder(Color.BLACK));
+
+        api = new ChessAPI();
 
         state = READY_TO_MOVE;
 
@@ -54,18 +57,18 @@ public class Board extends JPanel {
                 }
                 if (state == READY_TO_MOVE) {
                     if (piece != null) {
-                        if (piece.getColor() == myColor) {
-                            possibleMoves = piece.getPotentialMoves(board);
+//                        if (piece.getColor() == myColor) {
+                        possibleMoves = api.getPossibleMoves(piece);
+                        if (possibleMoves.size() == 0) return;
 
-                            // Highlight the possible move locations
-                            for (Move move : possibleMoves) {
-                                boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
-                            }
-                            state = MOVES_SHOWN;
+                        // Highlight the possible move locations
+                        for (Move move : possibleMoves) {
+                            boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
                         }
+                        state = MOVES_SHOWN;
+//                        }
                     }
-                }
-                else if (state == MOVES_SHOWN) {
+                } else if (state == MOVES_SHOWN) {
                     // Check that the clicked box is a possible move
                     boolean isValidMove = false;
                     Move currentMove = null;
@@ -185,20 +188,18 @@ public class Board extends JPanel {
      * @param move The move
      */
     public void movePiece(Move move) {
-        // Make sure that it's valid
-        if (move.getPiece().isMoveValid(this, move)) {
-            // Check if there is already a Piece where we are trying to move
-            if (getPieceAt(move.getFuturePosition()) != null) {
-                removePiece(move.getFuturePosition());
-            }
-            System.out.println("It's valid!");
-            System.out.println(move.getPiece().getPosition());
-            Position originalPosition = new Position(move.getPiece().getPosition().toString());
-            System.out.println(originalPosition);
-            move.getPiece().setPosition(move.getFuturePosition());
-            pieces[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()] = move.getPiece();
-            pieces[originalPosition.getyPos()][originalPosition.getXPosAsInt()] = null;
+        Logging.logEvent(move.toString() + "\n" + board.toString(), api.getGameID());
+        // Check if there is already a Piece where we are trying to move
+        if (getPieceAt(move.getFuturePosition()) != null) {
+            removePiece(move.getFuturePosition());
         }
+        System.out.println("It's valid!");
+        System.out.println(move.getPiece().getPosition());
+        Position originalPosition = new Position(move.getPiece().getPosition().toString());
+        System.out.println(originalPosition);
+        move.getPiece().setPosition(move.getFuturePosition());
+        pieces[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()] = move.getPiece();
+        pieces[originalPosition.getyPos()][originalPosition.getXPosAsInt()] = null;
     }
 
     /**
@@ -233,6 +234,7 @@ public class Board extends JPanel {
 
     /**
      * Removes a Piece, given the Piece object.
+     *
      * @param piece The Piece to remove from the Board
      */
     public void removePiece(Piece piece) {
@@ -241,6 +243,7 @@ public class Board extends JPanel {
 
     /**
      * Remove the piece at the given Position
+     *
      * @param position The position of the Piece that should be removed
      */
     public void removePiece(Position position) {
@@ -316,7 +319,17 @@ public class Board extends JPanel {
             for (int y = 0; y < 8; y++) {
                 ret += "|";
                 if (pieces[x][y] instanceof Pawn) {
-                    ret += "P";
+                    ret += "p";
+                } else if (pieces[x][y] instanceof King) {
+                    ret += "K";
+                } else if (pieces[x][y] instanceof Queen) {
+                    ret += "Q";
+                } else if (pieces[x][y] instanceof Rook) {
+                    ret += "r";
+                } else if (pieces[x][y] instanceof Knight) {
+                    ret += "k";
+                } else if (pieces[x][y] instanceof Bishop) {
+                    ret += "b";
                 } else {
                     ret += " ";
                 }

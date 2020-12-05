@@ -59,7 +59,7 @@ public class GUI extends JFrame {
                 startPanel.repaint();
                 if (e.getSource() == createGame) {
                     isCreatingGame = true;
-                    chessAPI = new ChessAPI(false);
+                    chessAPI = new ChessAPI();
                     gameID.setText(chessAPI.getGameID());
                 }
                 else if (e.getSource() == joinGame) {
@@ -76,7 +76,6 @@ public class GUI extends JFrame {
                 if (isCreatingGame) {
                 }
                 else {
-                    chessAPI = new ChessAPI(gameID.getText(), false);
                 }
                 Board board = new Board();
                 gui.remove(startPanel);

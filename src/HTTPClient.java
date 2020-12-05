@@ -15,7 +15,7 @@ public class HTTPClient {
         System.out.println("game_id: " + game_id);
         Piece piece = new Pawn(new Position("a2"), 0);
 
-        listPossibleMoves(piece, game_id);
+//        listPossibleMoves(piece, game_id);
     }
 
     public static String createNewGame() {
@@ -54,55 +54,33 @@ public class HTTPClient {
         return "";
     }
 
-
-    public static List<Move> listPossibleMoves(Piece piece, String game_id) {
-        List<Move> move = new ArrayList<Move>();
-
-        try {
-            String endpoint = "/moves";
-            baseUrl = new URL(url + endpoint + "?game_id=" + game_id + "&position=" + piece.getPosition().toString());
-            System.out.println(url + endpoint + "?game_id=" + game_id + "&position=" + piece.getPosition().toString());
-
-            HttpURLConnection connection = (HttpURLConnection) baseUrl.openConnection();
-
-            // Now it's "open", we can set the request method, headers etc.
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            int status = connection.getResponseCode();
-
-
-            //Read the response from the create new game request.
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer content = new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-                content.append(inputLine);
-                System.out.println("Content: " + content);
-            }
-            br.close();
-            connection.disconnect();
-
-            //            baseUrl = new URL(url + endpoint);
-
-
+//
+//    public static List<Move> listPossibleMoves(Piece piece, String game_id) {
+//        List<Move> move = new ArrayList<Move>();
+//
+//        try {
+//            String endpoint = "/moves";
+//
 //            Map<String, String> parameters = new HashMap<>();
 //            parameters.put("game_id", game_id);
 //            parameters.put("position", piece.getPosition().toString());
 //
 //            String content = ParameterStringBuilder.getParamsString(parameters);
 //
-//            String response = doPostSync(url+endpoint, content);
+//            System.out.println(content);
+//
+//            String response = doPostSync(url + endpoint, content);
 //
 //            System.out.println(response);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        //java still sucks
+//        return move;
+//
+//    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //java still sucks
-        return move;
-
-    }
 
 }

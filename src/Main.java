@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main (String [] args) {
 //        GUI gui = new GUI();
+        System.out.println(TimeServer.getTime());
 
         JFrame frame = new JFrame();
         frame.setSize(1000,1000);
