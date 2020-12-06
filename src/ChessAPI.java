@@ -118,11 +118,32 @@ public class ChessAPI {
      * Endpoint is /one/move/player
      *
      * @param move  The move to execute
-     * @param board The current game's Board. Objects are pass-by-ref, so just update that object, no need to return anything.
      */
-    public void movePlayer(Board board, Move move) {
-        board.movePiece(move);
-        // TODO API code
+    public void movePlayer(Move move) {
+
+        try {
+            String endpoint = "/move/player";
+
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("from", move.getPiece().getPosition().toString());
+            parameters.put("to", move.getFuturePosition().toString());
+            parameters.put("game_id", gameID);
+
+            String content = ParameterStringBuilder.getParamsString(parameters);
+
+            System.out.println(content);
+
+            String response = doPostSync(url + endpoint, content);
+
+
+        } catch (JSONException jsonException) {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     /**
@@ -134,7 +155,31 @@ public class ChessAPI {
      * @return True if the game IS over, false if it isn't.
      */
     public boolean checkGameOver() {
-        // TODO API code
+
+        try {
+            String endpoint = "/check";
+
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("game_id", gameID);
+
+            String content = ParameterStringBuilder.getParamsString(parameters);
+
+            System.out.println(content);
+
+            String response = doPostSync(url + endpoint, content);
+
+            System.out.println(response);
+
+            String jsonString = response.toString();
+            JSONObject obj = new JSONObject(jsonString);
+
+            return !obj.getString("status").equals("game continues");
+
+        } catch (JSONException jsonException) {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -145,9 +190,34 @@ public class ChessAPI {
      *
      * @param board The current game's Board. Objects are pass-by-ref, so just update that object, no need to return anything.
      */
-    public void moveAI(Board board) {
+    public Move moveAI(Board board) {
         // This will only work for one player games!
         // TODO API code
+        Move move = new Move();
+        try {
+            String endpoint = "/move/ai";
+
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("game_id", gameID);
+
+            String content = ParameterStringBuilder.getParamsString(parameters);
+
+            System.out.println(content);
+
+            String response = doPostSync(url + endpoint, content);
+
+            System.out.println(response);
+
+            String jsonString = response.toString();
+            JSONObject obj = new JSONObject(jsonString);
+            move = new Move(new Position(obj.getString("to")), board.getPieceAt(new Position(obj.getString("from"))));
+
+        } catch (JSONException jsonException) {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return move;
     }
 
     /**
