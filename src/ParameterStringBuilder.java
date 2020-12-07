@@ -1,8 +1,20 @@
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.Map;
 
+/**
+ * This class is used for building a string of URL parameters to pass stuff to the API.
+ * This is directly from StackOverflow, but I can't seem to find the link.
+ */
 public class ParameterStringBuilder {
+
+    /**
+     * Get the String of parameters based on a Map.
+     *
+     * @param params The Map<String, String> of parameters you want to add.
+     * @return The String of parameters
+     * @throws UnsupportedEncodingException Just in case things go wrong
+     */
     public static String getParamsString(Map<String, String> params)
             throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();

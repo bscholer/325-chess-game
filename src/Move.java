@@ -1,5 +1,5 @@
 /**
- * This class is pretty boilerplate, and doesn't need to contain any logic.
+ * This class is pretty boilerplate, and doesn't need to contain any game logic.
  */
 public class Move {
 
@@ -10,13 +10,13 @@ public class Move {
      * Default constructor to allow for some flexibility
      */
     public Move() {
-
     }
 
     /**
      * Main constructor. Piece should already contain it's current position.
+     *
      * @param futurePosition The future position of the piece
-     * @param piece The piece
+     * @param piece          The piece
      */
     public Move(Position futurePosition, Piece piece) {
         this.futurePosition = futurePosition;

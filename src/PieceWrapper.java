@@ -1,8 +1,7 @@
-import java.util.List;
-
 /**
  * This is a wrapper class for the Piece interface. It only defines the basic methods, like setColor()
  * It should be inherited by all of the Piece subclasses
+ * Decided to make this because Interfaces are dumb, and this covers a whole bunch of reused code.
  */
 public class PieceWrapper implements Piece {
 
@@ -15,8 +14,8 @@ public class PieceWrapper implements Piece {
     }
 
     /**
-     * DON'T OVERRIDE THIS!!!!
      * Sets the piece's color.
+     *
      * @param color Piece.SILVER or Piece.GOLD
      */
     @Override
@@ -27,8 +26,8 @@ public class PieceWrapper implements Piece {
     }
 
     /**
-     * DON'T OVERRIDE THIS!!!!
      * Gets the Piece's color
+     *
      * @return Piece.SILVER or Piece.GOLD
      */
     @Override
@@ -37,8 +36,8 @@ public class PieceWrapper implements Piece {
     }
 
     /**
-     * DON'T OVERRIDE THIS!!!!
      * Get's the Piece's Position
+     *
      * @return The Piece's Position
      */
     @Override
@@ -47,8 +46,8 @@ public class PieceWrapper implements Piece {
     }
 
     /**
-     * DON'T OVERRIDE THIS!!!!
      * Set's the Position of a Piece
+     *
      * @param position The position to set
      */
     @Override

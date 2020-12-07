@@ -6,22 +6,28 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+/**
+ * This class just starts the game, and handles everything outside of gameplay.
+ */
 public class Main {
 
+    // The board
     static Board board;
+    // Internationalization stuff
     static Locale englishLocale = new Locale("en", "US");
     static Locale spanishLocale = new Locale("es", "ES");
     static String[] languages = {"English", "Spanish"};
     static ResourceBundle resourceBundle = ResourceBundle.getBundle("resources", englishLocale);
+    // The JFrame to stick the stuff in.
     static JFrame frame;
 
     public static void main (String [] args) {
-        System.out.println(TimeServer.getTime());
-
         frame = new JFrame();
         frame.setSize(1000,1000);
         frame.setVisible(true);
+        frame.setTitle(resourceBundle.getString("title"));
 
+        // Buttons/language selector
         JButton resetGame = new JButton(resourceBundle.getString("reset"));
         resetGame.setBounds(0, 0, 150, 30);
         JComboBox languageSelector = new JComboBox(languages);
@@ -29,17 +35,19 @@ public class Main {
         languageSelector.setBounds(155, 0, 150, 30);
         frame.add(resetGame);
         frame.add(languageSelector);
-        frame.setTitle(resourceBundle.getString("title"));
 
-
+        // Make the Board and start the game
         board = new Board();
         board.setBounds(0, 60, 1000,940);
         board.fillBoard();
         board.drawBoard();
+
+        // Add the Board to the frame.
         frame.add(board);
         frame.pack();
         frame.repaint();
 
+        // An ActionListener for the reset button.
         ActionListener resetListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

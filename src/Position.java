@@ -42,36 +42,36 @@ public class Position {
         this.setPosition(position);
     }
 
+    /**
+     * Get xPos as a String
+     *
+     * @return the xPos
+     */
     public String getxPos() {
         return xPos.toUpperCase();
     }
 
+    /**
+     * Get the xPos as an int (0-7)
+     *
+     * @return xPos, 0-7
+     */
     public int getXPosAsInt() {
         return xPos.charAt(0) - 65;
     }
 
+    /**
+     * Get the yPos
+     *
+     * @return yPos as an int, 0-7
+     */
     public int getyPos() {
         return yPos;
     }
 
-    public void setxPos(String xPos) throws InvalidPositionException {
-        // Make sure the xPos is a valid letter
-        if (xPos.length() == 1 && "abcdefghABCDEFGH".contains("" + xPos)) {
-            this.xPos = xPos;
-        } else {
-            throw new InvalidPositionException(xPos + " is not a valid x position");
-        }
-    }
-
-    public void setyPos(int yPos) throws InvalidPositionException {
-        if (yPos >= 0 && yPos <= 7) {
-            this.yPos = yPos;
-        } else {
-            throw new InvalidPositionException(yPos + " is not a valid y position");
-        }
-    }
-
     /**
+     * Set the position with a xy or yx position, using letters for x.
+     *
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
      */
     public void setPosition(String position) {
@@ -95,11 +95,6 @@ public class Position {
                 return;
             }
         }
-    }
-
-    public void mirrorPosition() {
-        yPos = 7 - yPos;
-        xPos = ((char) (72 + 65 - xPos.charAt(0)) + "");
     }
 
     @Override

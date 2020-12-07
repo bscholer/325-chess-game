@@ -1,10 +1,18 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
+/**
+ * Takes care of the logging.
+ */
 public class Logging {
     private static String LOG_FILE_NAME = "_log.txt";
 
-    // Handles all the logging
+    /**
+     * Handles logging
+     *
+     * @param event  The string you'd like to log
+     * @param gameID The current gameID
+     */
     public static void logEvent(String event, String gameID) {
         String now = TimeServer.getTime();
         event = now + "\n" + event;

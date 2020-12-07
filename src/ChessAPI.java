@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Assigned to: Kenny
  * <p>
- * The helper class that handles all interaction with the Heroku Chess API.
+ * The helper class that handles all interaction with the Chess API.
  * <p>
  * All API endpoints specified in comments assume a prefix of:
  * http://chess-api-chess.herokuapp.com/api/v1/chess
@@ -28,7 +27,6 @@ public class ChessAPI {
     static URL baseUrl;
 
     /**
-     * PRIORITY: VERY HIGH
      * Creates a new ChessAPI object.
      * This needs to call the Heroku Chess API's Create New Game endpoint /one and set the gameID accordingly.
      */
@@ -67,8 +65,7 @@ public class ChessAPI {
     }
 
     /**
-     * PRIORITY: HIGH
-     * Use the Heroku API to figure out the possible moves for a given Piece.
+     * Use the Chess API to figure out the possible moves for a given Piece.
      * Should use /one/moves
      *
      * @param piece the piece to check movements of
@@ -113,47 +110,40 @@ public class ChessAPI {
     }
 
     /**
-     * PRIORITY: HIGH
-     * Execute Move, and tell the Heroku API about it.
+     * Tell the Chess API about a move the player made.
      * Endpoint is /one/move/player
      *
-     * @param move  The move to execute
+     * @param move The move to execute
      */
     public void movePlayer(Move move) {
-//        move.getPiece().getPosition().mirrorPosition();
-//        move.getFuturePosition().mirrorPosition();
-
         try {
+            // The endpoint
             String endpoint = "/move/player";
 
+            // The Map of parameters to pass
             Map<String, String> parameters = new HashMap<>();
             parameters.put("from", move.getPiece().getPosition().toString());
             parameters.put("to", move.getFuturePosition().toString());
             parameters.put("game_id", gameID);
 
+            // The String to send
             String content = ParameterStringBuilder.getParamsString(parameters);
 
-            System.out.println(content);
-
+            // Send it!
             String response = doPostSync(url + endpoint, content);
             System.out.println(response);
-
-
         } catch (JSONException jsonException) {
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     /**
-     * PRIORITY: HIGH
      * Check's if the game is over.
      * Endpoint is /one/check
      * This should be run after every single move.
+     * This isn't actually used to the the Chess API being broken. The game will never have the chance to get to this point.
      *
      * @return True if the game IS over, false if it isn't.
      */
@@ -187,7 +177,6 @@ public class ChessAPI {
     }
 
     /**
-     * PRIORITY: MEDIUM
      * In the case of a single-player game, lets the AI take it's turn.
      * Endpoint is /one/move/ai
      *
@@ -214,9 +203,7 @@ public class ChessAPI {
             String jsonString = response.toString();
             JSONObject obj = new JSONObject(jsonString);
             Position toPos = new Position(obj.getString("to"));
-//            toPos.mirrorPosition();
             Position fromPos = new Position(obj.getString("from"));
-//            fromPos.mirrorPosition();
             move = new Move(toPos, board.getPieceAt(fromPos));
         } catch (JSONException jsonException) {
 
@@ -227,21 +214,23 @@ public class ChessAPI {
     }
 
     /**
-     * PRIORITY: LOW
-     * Get's Heroku's version of the board. This will really only be used to confirm that our Board matches Heroku's board.
-     * This would likely use either /one/fen OR /two/fen
+     * Getter
      *
-     * @return The 2d pieces array
+     * @return the gameID
      */
-    public Piece[][] getBoard() {
-        // TODO API code
-        return new Piece[8][8];
-    }
-
     public String getGameID() {
         return gameID;
     }
 
+    /**
+     * This function takes care of all of the HTTP POST calls. Didn't make sense to rewrite the code 5 times.
+     * Slightly adapted from this: https://stackoverflow.com/a/26943988
+     *
+     * @param urlToRead The URL of the endpoint
+     * @param content   What to send (in application/x-www-form-urlencoded format)
+     * @return Whatever the call returns
+     * @throws IOException Just in case
+     */
     private String doPostSync(final String urlToRead, final String content) throws IOException {
         final String charset = "UTF-8";
         // Create the connection

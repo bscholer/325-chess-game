@@ -4,27 +4,36 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The chess board. Contains a 2D array of pieces.
+ * The chess board. Contains a 2D array of Pieces.
+ * This is also the main 'thread' of the program, and is a JPanel which is added to the JFrame
  */
 public class Board extends JPanel {
 
+    // The 2D array of Pieces.
     private Piece[][] pieces;
+    // The list of buttons, which is closely linked to pieces[][]
     private JButton[][] boardButtons;
+    // I know this is terrible, but it was the only way I could figure to be able to access the 'this' context from the ActionListener
     private Board board;
+    // The ChessAPI
     private ChessAPI api;
+    // The state of the game.
     private int state;
+    // Possible game states. Used for consistency. Could have been replaced with an enum, but there's only two states.
     private final int READY_TO_MOVE = 0;
     private final int MOVES_SHOWN = 1;
+    // The List of possible Moves the user can make. Only has values in it when state=MOVES_SHOWN.
     private List<Move> possibleMoves;
+    // The users Piece color.
     private int myColor = Piece.GOLD;
 
     /**
      * Default constructor, just instantiates the array.
-     * Call fillBoard() to fill the board with pieces in their starting positions
+     * Call fillBoard() after this to fill the board with pieces in their starting positions,
+     * then call drawBoard()
      * This takes heavy inspiration from https://stackoverflow.com/a/21096455
      */
     public Board() {
@@ -40,31 +49,38 @@ public class Board extends JPanel {
         pieces = new Piece[8][8];
         boardButtons = new JButton[8][8];
 
+        // The ActionListener for the buttons on the Board.
         ActionListener boardButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JButton clickedButton;
                 Piece piece = null;
                 Position position = null;
+                // Figure out which button was pressed
                 for (int x = 0; x < 8; x++) {
                     for (int y = 0; y < 8; y++) {
                         if (e.getSource() == boardButtons[x][y]) {
-                            clickedButton = (JButton) e.getSource();
+                            // Having to do y,x instead of x,y still confuses me, but this makes it work.
                             position = new Position(y, x);
                             piece = getPieceAt(position);
                         }
                     }
                 }
+                // We're ready to move (possible moves aren't displayed yet)
                 if (state == READY_TO_MOVE) {
+                    // Make sure there is a Piece where we clicked
                     if (piece != null) {
+                        // Make sure the color of the Piece we clicked matches our color.
                         if (piece.getColor() == myColor) {
+                            // Get list of possible moves from the API
                             possibleMoves = api.getPossibleMoves(piece);
+                            // Make sure there are moves that can be made, otherwise get out of here.
                             if (possibleMoves.size() == 0) return;
 
                             // Highlight the possible move locations
                             for (Move move : possibleMoves) {
                                 boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
                             }
+                            // The user can now select a Move to make.
                             state = MOVES_SHOWN;
                         }
                     }
@@ -72,6 +88,7 @@ public class Board extends JPanel {
                     // Check that the clicked box is a possible move
                     boolean isValidMove = false;
                     Move currentMove = null;
+                    // Make sure that the button clicked is within the list of possible Moves.
                     for (Move move : possibleMoves) {
                         if (move.getFuturePosition().equals(position)) {
                             isValidMove = true;
@@ -80,14 +97,21 @@ public class Board extends JPanel {
                     }
                     // Make the move
                     if (isValidMove) {
+                        // Move the player on the API's game first
                         api.movePlayer(currentMove);
+                        // Move the piece on the local Board
                         movePiece(currentMove);
+                        // Redraw
                         drawBoard();
+                        // Recolor buttons (get rid of the blue ones)
                         recolorButtons();
                         // Have the AI Move
                         Move aiMove = api.moveAI(board);
+                        // Move the AI's Piece on the local Board
                         movePiece(aiMove);
+                        // Redraw
                         drawBoard();
+                        // Reset the state to READY_TO_MOVE
                         state = READY_TO_MOVE;
                     }
                 }
@@ -106,7 +130,7 @@ public class Board extends JPanel {
 
                 // Color every other button black
                 if ((x % 2 == 1 && y % 2 == 1) || (y % 2 == 0 && x % 2 == 0)) {
-                    button.setBackground(Color.GRAY);
+                    button.setBackground(Color.WHITE);
                 } else {
                     button.setBackground(Color.BLACK);
                 }
@@ -133,6 +157,9 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * Recolors the buttons after the possible moves are displayed.
+     */
     private void recolorButtons() {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -140,7 +167,7 @@ public class Board extends JPanel {
 
                 // Color every other button black
                 if ((x % 2 == 1 && y % 2 == 1) || (y % 2 == 0 && x % 2 == 0)) {
-                    button.setBackground(Color.GRAY);
+                    button.setBackground(Color.WHITE);
                 } else {
                     button.setBackground(Color.BLACK);
                 }
@@ -192,48 +219,18 @@ public class Board extends JPanel {
      * @param move The move
      */
     public void movePiece(Move move) {
+        // Log it!
         Logging.logEvent(move.toString() + "\n" + board.toString(), api.getGameID());
         // Check if there is already a Piece where we are trying to move
         if (getPieceAt(move.getFuturePosition()) != null) {
+            // If there is, remove it.
             removePiece(move.getFuturePosition());
         }
-        System.out.println("It's valid!");
-        System.out.println(move.getPiece().getPosition());
+        // Move the piece in pieces[][]
         Position originalPosition = new Position(move.getPiece().getPosition().toString());
-        System.out.println(originalPosition);
         move.getPiece().setPosition(move.getFuturePosition());
         pieces[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()] = move.getPiece();
         pieces[originalPosition.getyPos()][originalPosition.getXPosAsInt()] = null;
-    }
-
-    /**
-     * This will look through the current board, find all the pieces, and reset their positions to
-     * whatever they have as their position variable.
-     * Call this method AFTER changing a Piece object's position.
-     *
-     * @param piecesList The list of pieces generated by getListOfPieces()
-     */
-    public void updateBoard(List<Piece> piecesList) {
-        // Nuke the (2d) pieces array
-        pieces = new Piece[8][8];
-
-        // Add the pieces back into the pieces 2d array
-        for (Piece piece : piecesList) {
-            pieces[piece.getPosition().getXPosAsInt()][piece.getPosition().getyPos()] = piece;
-        }
-    }
-
-    private List<Piece> getListOfPieces() {
-        // Get all the pieces and put them in a temporary (Array)List
-        List<Piece> piecesList = new ArrayList<>();
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                if (pieces[x][y] != null) {
-                    piecesList.add(pieces[x][y]);
-                }
-            }
-        }
-        return piecesList;
     }
 
     /**
@@ -269,6 +266,7 @@ public class Board extends JPanel {
                 JButton button = boardButtons[x][y];
                 Piece piece = pieces[x][y];
 
+                // Just figure out what type of Piece it is, and give the button an ImageIcon based on that and the color.
                 if (piece instanceof Pawn) {
                     if (piece.getColor() == Piece.GOLD) button.setIcon(new ImageIcon(ChessSprites.GOLD_PAWN));
                     if (piece.getColor() == Piece.SILVER) button.setIcon(new ImageIcon(ChessSprites.SILVER_PAWN));
@@ -296,24 +294,29 @@ public class Board extends JPanel {
     }
 
     /**
-     * Returns the 2D array of pieces. I can't think of when this would need to be used, but it's here anyway.
+     * Returns the 2D array of Pieces. I can't think of when this would need to be used, but it's here anyway.
      *
-     * @return The 2D array of pieces
+     * @return The 2D array of Pieces
      */
     public Piece[][] getPieces() {
         return pieces;
     }
 
     /**
-     * Gets the piece at a given position
+     * Gets the Piece at a given Position
      *
-     * @param position The position to get the piece from
-     * @return The piece at position
+     * @param position The Position to get the Piece from
+     * @return The Piece at the Position
      */
     public Piece getPieceAt(Position position) {
         return pieces[position.getyPos()][position.getXPosAsInt()];
     }
 
+    /**
+     * Just a quick and dirty toString to pretty-print the board to the console. Used for debugging.
+     *
+     * @return A string with the ASCII board.
+     */
     @Override
     public String toString() {
         String ret = "";
