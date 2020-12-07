@@ -1,6 +1,8 @@
 #Chess Game (325 Final Project)
 ###Executing
 
+IMPORTANT: There is an issue with the Chess API we are using that basically ends the game after a minute or so. We didn't realize this until we had almost completed the project.
+
 To execute the code, run Main.java. Please note that there is one dependency, lib/json-20201115.jar.
 
 You'll notice that the game is fairly slow--to speed it up, please change useTimeAPI to false in TimeServer.java.
