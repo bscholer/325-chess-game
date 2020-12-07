@@ -16,19 +16,12 @@ public class Main {
     static JFrame frame;
 
     public static void main (String [] args) {
-//        GUI gui = new GUI();
         System.out.println(TimeServer.getTime());
-
-//
-//        Position p = new Position("a1");
-//        p.mirrorPosition();
-//        System.out.println(p);
 
         frame = new JFrame();
         frame.setSize(1000,1000);
         frame.setVisible(true);
 
-        JToolBar toolBar = new JToolBar();
         JButton resetGame = new JButton(resourceBundle.getString("reset"));
         resetGame.setBounds(0, 0, 150, 30);
         JComboBox languageSelector = new JComboBox(languages);
@@ -86,12 +79,5 @@ public class Main {
             }
         };
         languageSelector.addActionListener(changeLocaleListener);
-
-//        Board board = new Board();
-//        board.fillBoard();
-//        System.out.println(board);
-////        board.updateBoard();
-//        List<Move> moves = board.getPieceAt(new Position(0, 0)).getPotentialMoves(board);
-//        System.out.println(board);
     }
 }
