@@ -120,6 +120,8 @@ public class ChessAPI {
      * @param move  The move to execute
      */
     public void movePlayer(Move move) {
+//        move.getPiece().getPosition().mirrorPosition();
+//        move.getFuturePosition().mirrorPosition();
 
         try {
             String endpoint = "/move/player";
@@ -134,6 +136,7 @@ public class ChessAPI {
             System.out.println(content);
 
             String response = doPostSync(url + endpoint, content);
+            System.out.println(response);
 
 
         } catch (JSONException jsonException) {
@@ -210,8 +213,11 @@ public class ChessAPI {
 
             String jsonString = response.toString();
             JSONObject obj = new JSONObject(jsonString);
-            move = new Move(new Position(obj.getString("to")), board.getPieceAt(new Position(obj.getString("from"))));
-
+            Position toPos = new Position(obj.getString("to"));
+//            toPos.mirrorPosition();
+            Position fromPos = new Position(obj.getString("from"));
+//            fromPos.mirrorPosition();
+            move = new Move(toPos, board.getPieceAt(fromPos));
         } catch (JSONException jsonException) {
 
         } catch (Exception e) {

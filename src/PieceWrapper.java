@@ -14,23 +14,6 @@ public class PieceWrapper implements Piece {
         this.color = color;
     }
 
-    /*
-     * OVERRIDE THIS!!!!
-     * Implementing these methods is the main thing that you need to @Ashwin
-     */
-    @Override
-    public boolean isMoveValid(Board board, Move move) {
-        return false;
-    }
-
-    /*
-     * OVERRIDE THIS!!!!
-     */
-    @Override
-    public List<Move> getPotentialMoves(Board board) {
-        return null;
-    }
-
     /**
      * DON'T OVERRIDE THIS!!!!
      * Sets the piece's color.

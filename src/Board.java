@@ -57,16 +57,16 @@ public class Board extends JPanel {
                 }
                 if (state == READY_TO_MOVE) {
                     if (piece != null) {
-//                        if (piece.getColor() == myColor) {
-                        possibleMoves = api.getPossibleMoves(piece);
-                        if (possibleMoves.size() == 0) return;
+                        if (piece.getColor() == myColor) {
+                            possibleMoves = api.getPossibleMoves(piece);
+                            if (possibleMoves.size() == 0) return;
 
-                        // Highlight the possible move locations
-                        for (Move move : possibleMoves) {
-                            boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
+                            // Highlight the possible move locations
+                            for (Move move : possibleMoves) {
+                                boardButtons[move.getFuturePosition().getyPos()][move.getFuturePosition().getXPosAsInt()].setBackground(Color.BLUE);
+                            }
+                            state = MOVES_SHOWN;
                         }
-                        state = MOVES_SHOWN;
-//                        }
                     }
                 } else if (state == MOVES_SHOWN) {
                     // Check that the clicked box is a possible move
@@ -80,10 +80,14 @@ public class Board extends JPanel {
                     }
                     // Make the move
                     if (isValidMove) {
+                        api.movePlayer(currentMove);
                         movePiece(currentMove);
-                        System.out.println(board);
                         drawBoard();
                         recolorButtons();
+                        // Have the AI Move
+                        Move aiMove = api.moveAI(board);
+                        movePiece(aiMove);
+                        drawBoard();
                         state = READY_TO_MOVE;
                     }
                 }

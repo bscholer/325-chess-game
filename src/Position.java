@@ -16,16 +16,17 @@ public class Position {
     /**
      * Default (empty) constructor. This shouldn't be used except in the piece interface.
      */
-    public Position () {
+    public Position() {
 
     }
 
     /**
      * Constructor for creating a Position with numerical coordinates
+     *
      * @param xPos 0-7
      * @param yPos 0-7
      */
-    public Position (int xPos, int yPos) {
+    public Position(int xPos, int yPos) {
         if (xPos >= 0 && xPos <= 8 && yPos >= 0 && yPos <= 8) {
             this.xPos = ((char) (xPos + 65)) + "";
             this.yPos = yPos;
@@ -34,9 +35,10 @@ public class Position {
 
     /**
      * Constructor, parses the position string and sets the xPos/yPos variables.
+     *
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
      */
-    public Position (String position) {
+    public Position(String position) {
         this.setPosition(position);
     }
 
@@ -56,8 +58,7 @@ public class Position {
         // Make sure the xPos is a valid letter
         if (xPos.length() == 1 && "abcdefghABCDEFGH".contains("" + xPos)) {
             this.xPos = xPos;
-        }
-        else {
+        } else {
             throw new InvalidPositionException(xPos + " is not a valid x position");
         }
     }
@@ -65,8 +66,7 @@ public class Position {
     public void setyPos(int yPos) throws InvalidPositionException {
         if (yPos >= 0 && yPos <= 7) {
             this.yPos = yPos;
-        }
-        else {
+        } else {
             throw new InvalidPositionException(yPos + " is not a valid y position");
         }
     }
@@ -74,7 +74,7 @@ public class Position {
     /**
      * @param position The xy or yx position, can either be in the 'A3' or the '3A' format.
      */
-    public void setPosition (String position) {
+    public void setPosition(String position) {
         // The position must be only two characters long
         if (position.length() != 2) return;
 
@@ -90,12 +90,16 @@ public class Position {
             if (yxMatch.find()) {
                 xPos = yxMatch.group(2).toUpperCase();
                 yPos = Integer.parseInt(yxMatch.group(1)) - 1;
-            }
-            else {
+            } else {
                 // Neither match worked
                 return;
             }
         }
+    }
+
+    public void mirrorPosition() {
+        yPos = 7 - yPos;
+        xPos = ((char) (72 + 65 - xPos.charAt(0)) + "");
     }
 
     @Override
@@ -105,6 +109,7 @@ public class Position {
 
     /**
      * Just checks if the x and y of this and obj are equal
+     *
      * @param obj The Position
      * @return true or false, depending on if the x's and y's match
      */
@@ -112,7 +117,6 @@ public class Position {
     public boolean equals(Object obj) {
         if (obj instanceof Position) {
             return (xPos.equals(((Position) obj).getxPos()) && yPos == ((Position) obj).getyPos());
-        }
-        else return false;
+        } else return false;
     }
 }
